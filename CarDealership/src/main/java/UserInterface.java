@@ -1,5 +1,4 @@
 
-import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -16,7 +15,19 @@ public class UserInterface {
         init();                 // load dealership from file
         int choice;
         do {
-            showMenu();
+            System.out.println("""
+                    ---------------- CAR DEALERSHIP ----------------
+                    1 - Find vehicles within a price range
+                    2 - Find vehicles by make / model
+                    3 - Find vehicles by year range
+                    4 - Find vehicles by color
+                    5 - Find vehicles by mileage range
+                    6 - Find vehicles by type (car, truck, SUV, van)
+                    7 - List ALL vehicles
+                    8 - Add a vehicle
+                    9 - Remove a vehicle
+                    99 - Quit
+                    """);
             choice = readInt("Enter command: ");
             switch (choice) {
                 case 1 -> processGetByPriceRequest();
@@ -35,24 +46,8 @@ public class UserInterface {
     }
 
     private void init() {
-        dfm = new DealershipFileManager("src/main/resources/inventory.csv");
-        dealership = dfm.getDealership();
-    }
-
-    private void showMenu() {
-        System.out.println("""
-                ---------------- CAR DEALERSHIP ----------------
-                1 - Find vehicles within a price range
-                2 - Find vehicles by make / model
-                3 - Find vehicles by year range
-                4 - Find vehicles by color
-                5 - Find vehicles by mileage range
-                6 - Find vehicles by type (car, truck, SUV, van)
-                7 - List ALL vehicles
-                8 - Add a vehicle
-                9 - Remove a vehicle
-                99 - Quit
-                """);
+        this.dfm = new DealershipFileManager("src/main/resources/inventory.csv");
+        dealership = this.dfm.getDealership();
     }
 
     private int readInt(String prompt) {
@@ -77,12 +72,12 @@ public class UserInterface {
         }
     }
 
-    private void displayVehicles(List<Vehicle> list) {
+    private void displayVehicles(ArrayList<Vehicle> list) {
         if (list.isEmpty()) {
             System.out.println("No matching vehicles.\n");
         } else {
             for (Vehicle v : list) {
-                System.out.println(v);
+                System.out.println(v.toString());
             }
             System.out.println();
         }
